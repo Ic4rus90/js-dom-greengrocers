@@ -42,10 +42,23 @@ button {
   justify-content: center;
 }
 
+.store--filter-list {
+  display: grid;
+  grid-template-columns: repeat(4, 25px);
+  grid-gap: 5rem;
+  justify-content: center;
+}
+
 .store--item-list li {
   display: grid;
   place-items: center;
   grid-row-gap: 0.5rem;
+}
+
+.store--filter-list li {
+  display: grid;
+  place-items: center;
+  grid-row-gap: 10rem;
 }
 
 .store--item-icon {
@@ -64,6 +77,7 @@ button {
     grid-template-columns: repeat(2, 125px);
   }
 }
+
 
 /* Cart */
 
