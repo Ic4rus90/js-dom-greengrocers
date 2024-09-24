@@ -6,13 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/index.css" />
+    <link rel="stylesheet" href="styles/dropdown.css" />
     <title>Greengrocers</title>
     <script defer src="index.js"></script>
   </head>
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+      
       <ul class="filter-list store--filter-list"></ul>
+
+      <div class="dropdown">
+        <button onclick="dropdownFunction()" class="dropbtn">Sorting</button>
+        <div id="myDropdown" class="dropdown-content">
+        </div>
+      </div>
+
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>

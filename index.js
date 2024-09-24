@@ -75,6 +75,20 @@ const state = {
       id: 3,
       name: 'berry'
     }
+  ],
+  sortingButtons: [ 
+    {
+      name: 'name ASC'
+    },
+    {
+      name: 'name DESC'
+    },
+    {
+      name: 'price ASC'
+    },
+    {
+      name: 'price DESC'
+    }
   ]
 };
 
@@ -102,15 +116,77 @@ function renderStoreFilterButtons() {
 let activeFilter = ''
 
 function setActiveFilter(filter) {
-  console.log('filter button clicked')
   if (activeFilter === filter.name) {
     activeFilter = '';
   } else {
     activeFilter = filter.name;
   }
 
-  renderStoreItems();
+  applyFilterAndSort();
 }
+
+/* The following drop down implementation including html and css was copied from W3 schools, 
+to improve the cosmetics of the web page. 
+
+When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function dropdownFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+const sortingDropdown = document.querySelector('.dropdown-content');
+
+function renderSortingButtons() {
+  sortingDropdown.innerHTML = '';
+
+  state.sortingButtons.forEach((sortingOption) => {
+    const button = document.createElement('button');
+    button.textContent = sortingOption.name;
+
+    button.addEventListener('click', () => {
+      setSorting(sortingOption.name);
+      dropdownFunction();
+    });
+
+    sortingDropdown.appendChild(button);
+  }
+)};
+
+let activeSorting = '';
+
+
+function setSorting(sortingName) {
+  if (activeSorting === sortingName) {
+    activeSorting = '';
+  } else {
+    activeSorting = sortingName
+  }
+
+  applyFilterAndSort();
+}
+
+function applyFilterAndSort() {
+  let itemsToRender = [...state.items];
+
+  if (activeFilter !== ''){
+    itemsToRender = itemsToRender.filter((item) => item.type === activeFilter)
+  } 
+
+  if (activeSorting !== '') {
+    if (activeSorting === 'price ASC') {
+      itemsToRender.sort((a, b) => a.price - b.price);
+    } else if (activeSorting === 'price DESC') {
+      itemsToRender.sort((a, b) => b.price - a.price);
+    } else if (activeSorting === 'name ASC') {
+      itemsToRender.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (activeSorting === 'name DESC') {
+      itemsToRender.sort((a, b) => b.name.localeCompare(a.name));
+    }
+  }
+  
+  renderStoreItems(itemsToRender)
+}
+
 
 /*
 Select the store item list element (ul). 
@@ -120,18 +196,12 @@ which is the other class in the index.html for the store.
 const storeItemList = document.querySelector('.store--item-list');
 
 // Function to render store items
-function renderStoreItems() {
+function renderStoreItems(itemsToRender) {
   // Clear all existing items
   storeItemList.innerHTML = '';
 
   // Loop through each item in the state.items array
-  state.items.forEach((item) => {
-
-
-
-    if (activeFilter !== '' && item.type !== activeFilter) {
-      return
-    }
+  itemsToRender.forEach((item) => {
 
     /*
     Create the elements based on the store item template.
@@ -193,7 +263,6 @@ function renderStoreItems() {
     storeItemList.appendChild(li);
   });
 }
-
 
 
 /*
@@ -350,7 +419,8 @@ function updateTotalPrice() {
 }
 
 // Initialize the whole shabang.
-renderStoreItems();
+renderStoreFilterButtons();
+renderSortingButtons();
+applyFilterAndSort();
 renderCartItems();
 updateTotalPrice();
-renderStoreFilterButtons();
